@@ -16,12 +16,12 @@ my-rpc-server模块
 my-rpc-client模块  
 - Spring Bean中使用@RpcReference注解注入rpc api的代理对象，无需手动去创建代理对象，是通过com.geek.RpcStubAnnotationPostProcessor在postProcessBeforeInitialization阶段对spring bean成员变量赋值来实现。
 - com.geek.Discovery实现订阅zk中服务节点及其子节点的变化事件，捕获NODE_ADDED和NODE_REMOVED事件来同步更新本地服务列表的缓存。
-- com.geek.RpcClientFilter实现对本地某个服务的服务列表进行过滤，过滤规则基于服务端注册的服务信息以及@RpcReference指定的group和version。
+- com.geek.RpcClientFilter实现对某个服务的服务列表进行过滤，过滤规则基于服务端注册的服务信息以及@RpcReference指定的group和version。
 - com.geek.RoundRobinLoadBalancer实现对过滤后的服务列表进行负载均衡，算法使用轮询。  
   
 my-rpc-client-app模块  
 - 新增@Service注解的com.geek.TestService，成员变量使用@RpcReference注解注入rpc api的代理对象。该类是为了测试rpc api的代理对象是否注入成功。
 
 ## 待改进的地方 ##
-- 客户端多个线程无法共享单个channel发送请求，造成资源浪费，需改成tcp长连接。客户端需要增加每次消息间的隔离标识，对应服务端增加隔离标识处理的handler。同时客户端和服务端增加心跳机制的处理。
+- 客户端多个线程无法共享单个channel发送请求，造成资源浪费，需改成tcp长连接。因此，客户端需要增加每次消息间的隔离标识，对应服务端增加隔离标识处理的handler。同时客户端和服务端增加心跳机制的处理。
 
